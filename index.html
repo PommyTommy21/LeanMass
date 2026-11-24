@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LeanMass">
+<meta name="theme-color" content="#080b14">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
+<title>LeanMass — Max Hypertrophy</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#080b14;--surface:#0d1220;--card:#111827;--card2:#1a2235;
+  --border:#1e2d47;--border2:#263548;
+  --cyan:#00e5ff;--cyan-dim:#00e5ff22;--orange:#ff6e2d;--purple:#a855f7;
+  --green:#22d3a0;--yellow:#fbbf24;--text:#e8edf5;--text2:#a0aec0;--text3:#64748b;--red:#ef4444;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:15px;line-height:1.65;min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:40px 40px;opacity:0.15;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:-200px;left:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,229,255,0.06) 0%,transparent 70%);pointer-events:none;z-index:0}
+.container{max-width:920px;margin:0 auto;padding:0 16px 80px;position:relative;z-index:1}
+
+header{padding:52px 0 36px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.header-eyebrow{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.18em;color:var(--cyan);text-transform:uppercase;margin-bottom:14px}
+.header-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--cyan)}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,11vw,100px);line-height:0.9;letter-spacing:0.03em;background:linear-gradient(135deg,#fff 0%,var(--cyan) 50%,#7dd3f0 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.h1-sub{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,5vw,48px);color:var(--text2);letter-spacing:0.06em;display:block;margin-bottom:20px}
+.stats-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.chip{background:var(--card);border:1px solid var(--border2);border-radius:6px;padding:5px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text2)}
+.chip b{color:var(--text);font-weight:600}
+
+#install-banner{display:none;background:linear-gradient(135deg,var(--cyan-dim),rgba(168,85,247,0.1));border:1px solid var(--cyan);border-radius:12px;padding:14px 18px;margin-bottom:20px;align-items:center;gap:14px}
+#install-banner.show{display:flex}
+.install-text{flex:1;font-size:13px;color:var(--text2)}
+.install-text b{color:var(--text);font-size:14px;display:block;margin-bottom:2px}
+.install-btn{background:var(--cyan);color:#080b14;border:none;border-radius:8px;padding:8px 18px;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+
+.tabs{display:flex;gap:3px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:5px;margin-bottom:28px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab-btn{flex-shrink:0;background:transparent;border:none;border-radius:8px;padding:9px 15px;font-family:'Inter',sans-serif;font-size:12px;font-weight:500;color:var(--text3);cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.tab-btn.active{background:var(--cyan);color:#080b14;font-weight:700}
+.tab-btn:hover:not(.active){color:var(--text);background:var(--border)}
+
+.section{display:none;animation:fadeIn 0.25s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.sec-title{font-family:'Bebas Neue',sans-serif;font-size:34px;letter-spacing:0.05em;color:var(--text);margin-bottom:4px}
+.sec-sub{font-size:13px;color:var(--text3);margin-bottom:24px;font-weight:400}
+
+.week-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:28px}
+@media(max-width:600px){.week-grid{grid-template-columns:repeat(4,1fr)}}
+.day-pill{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 6px;text-align:center;cursor:pointer;transition:all 0.2s}
+.day-pill:hover:not(.rest){border-color:var(--cyan);background:var(--card2);transform:translateY(-2px)}
+.day-pill.rest{opacity:0.3;cursor:default}
+.dp-day{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--text3);text-transform:uppercase;margin-bottom:6px}
+.dp-name{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.05em;line-height:1.2}
+.dp-dot{width:5px;height:5px;border-radius:50%;margin:8px auto 0}
+
+.workout-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:20px}
+.wc-header{padding:20px 22px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;background:var(--surface)}
+.wc-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.14em;color:var(--text3);text-transform:uppercase;margin-bottom:4px}
+.wc-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:0.04em;line-height:1}
+.wc-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;white-space:nowrap;flex-shrink:0;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px}
+.wc-summary{padding:10px 22px;font-size:12px;color:var(--text3);border-bottom:1px solid var(--border);background:rgba(0,0,0,0.15)}
+.wc-summary b{color:var(--text2)}
+
+.ex-header-row{display:grid;grid-template-columns:32px 1fr 64px 72px 72px;gap:8px;align-items:center;padding:8px 22px;background:rgba(0,0,0,0.25);border-bottom:1px solid var(--border)}
+.ex-col-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);text-align:center}
+.ex-col-lbl:first-child{text-align:left}
+.ex-col-lbl:nth-child(2){text-align:left}
+.ex-row{display:grid;grid-template-columns:32px 1fr 64px 72px 72px;gap:8px;align-items:center;padding:14px 22px;border-bottom:1px solid var(--border);cursor:pointer;transition:background 0.15s;position:relative}
+.ex-row:last-child{border-bottom:none}
+.ex-row:hover{background:var(--card2)}
+.ex-row::after{content:'▶ Demo';position:absolute;right:22px;top:50%;transform:translateY(-50%);font-size:9px;font-weight:700;letter-spacing:0.1em;color:var(--cyan);opacity:0;transition:opacity 0.2s;pointer-events:none}
+.ex-row:hover::after{opacity:1}
+.ex-row:hover .ex-stat{opacity:0}
+.ex-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text3);font-weight:500}
+.ex-name-main{font-weight:600;font-size:14px;color:var(--text)}
+.ex-note{font-size:11px;color:var(--text3);margin-top:2px;line-height:1.45}
+.priority-star{color:var(--cyan);font-size:10px;margin-left:4px;vertical-align:middle}
+.ex-stat{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;color:var(--text2);text-align:center;transition:opacity 0.2s}
+@media(max-width:560px){
+  .ex-header-row,.ex-row{grid-template-columns:24px 1fr 50px 58px;padding:12px 14px}
+  .ex-header-row .ex-col-lbl:nth-child(4),.ex-row .ex-stat:nth-child(5){display:none}
+  .ex-row::after{display:none}
+}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(8,11,20,0.92);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:16px}
+.modal-overlay.open{display:flex;animation:fadeIn 0.2s ease}
+.modal{background:var(--card);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:560px;max-height:94vh;overflow-y:auto;box-shadow:0 40px 80px rgba(0,0,0,0.7),0 0 0 1px rgba(0,229,255,0.08)}
+.modal-header{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;background:var(--surface)}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.05em;color:var(--text);line-height:1}
+.modal-subtitle{font-size:11px;color:var(--text3);margin-top:3px}
+.modal-close{background:var(--border);border:none;color:var(--text2);cursor:pointer;width:30px;height:30px;border-radius:50%;font-size:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background 0.2s}
+.modal-close:hover{background:var(--border2);color:var(--text)}
+.demo-stage{background:linear-gradient(180deg,#0a0f1e 0%,#0d1628 100%);position:relative;height:240px;overflow:hidden}
+.demo-canvas{width:100%;height:100%;display:block}
+.demo-label{position:absolute;bottom:10px;left:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;color:rgba(0,229,255,0.5);text-transform:uppercase}
+.phase-indicator{position:absolute;top:12px;right:14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.1em;color:var(--cyan);background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.2);padding:4px 10px;border-radius:20px}
+.modal-body{padding:18px 22px 22px}
+.cue-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+@media(max-width:420px){.cue-grid{grid-template-columns:1fr}}
+.cue-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.cue-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:4px}
+.cue-val{font-size:13px;font-weight:600;color:var(--text)}
+.form-tips{list-style:none;display:flex;flex-direction:column;gap:6px}
+.form-tips li{font-size:13px;color:var(--text2);padding-left:18px;position:relative;line-height:1.5}
+.form-tips li::before{content:'→';position:absolute;left:0;color:var(--cyan);font-size:11px;top:1px}
+.form-tips li b{color:var(--text)}
+.muscle-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.muscle-tag{background:var(--card2);border:1px solid var(--border2);border-radius:5px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--text2)}
+.muscle-tag.primary{background:rgba(0,229,255,0.1);border-color:rgba(0,229,255,0.3);color:var(--cyan)}
+
+.macro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.macro-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 20px;position:relative;overflow:hidden}
+.macro-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.macro-card.cal::before{background:var(--cyan)}
+.macro-card.pro::before{background:var(--orange)}
+.macro-card.carb::before{background:var(--purple)}
+.macro-card.fat::before{background:var(--green)}
+.mc-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+.mc-val{font-family:'Bebas Neue',sans-serif;font-size:42px;line-height:1;letter-spacing:0.02em}
+.macro-card.cal .mc-val{color:var(--cyan)}
+.macro-card.pro .mc-val{color:var(--orange)}
+.macro-card.carb .mc-val{color:var(--purple)}
+.macro-card.fat .mc-val{color:var(--green)}
+.mc-unit{font-size:12px;color:var(--text3);margin-top:4px}
+
+.info-block{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:14px}
+.info-block h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.05em;color:var(--text);margin-bottom:12px}
+.info-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+.info-list li{font-size:13px;color:var(--text2);padding-left:18px;position:relative;line-height:1.55}
+.info-list li::before{content:'→';position:absolute;left:0;color:var(--cyan);font-size:11px}
+.info-list li b{color:var(--text)}
+.alert-box{background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.2);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6}
+.alert-box b{color:var(--cyan)}
+
+.vol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.vol-cell{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px}
+.vol-cell .v-name{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text3)}
+.vol-cell .v-num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--cyan);line-height:1.1}
+.vol-cell .v-num small{font-family:'Inter',sans-serif;font-size:10px;color:var(--text3);margin-left:3px}
+
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:16px}
+.tip-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.tip-icon{font-size:22px;margin-bottom:8px}
+.tip-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.05em;margin-bottom:6px;color:var(--text)}
+.tip-body{font-size:13px;color:var(--text2);line-height:1.6}
+.tip-body b{color:var(--text)}
+.progress-step{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--border);align-items:flex-start}
+.progress-step:last-child{border-bottom:none}
+.step-num{font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--cyan);line-height:1;flex-shrink:0;width:34px}
+.step-text{font-size:13px;color:var(--text2);padding-top:6px;line-height:1.55}
+.step-text b{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <div class="header-eyebrow">⚡ Max Hypertrophy Programme</div>
+  <h1>LEAN</h1>
+  <span class="h1-sub">MASS PROGRAMME</span>
+  <p style="font-size:14px;color:var(--text2);max-width:520px;margin-top:-10px">
+    5-day upper-body specialisation · chest, back, shoulders &amp; arms · built for maximum frame and physique
+  </p>
+  <div class="stats-row">
+    <div class="chip"><b>88.7 kg</b> bodyweight</div>
+    <div class="chip"><b>6'5"</b> height</div>
+    <div class="chip"><b>5 days</b> / week</div>
+    <div class="chip">Goal: <b>Max hypertrophy</b></div>
+    <div class="chip">Focus: <b>Torso &amp; Arms</b></div>
+  </div>
+</header>
+
+<div id="install-banner">
+  <div class="install-text"><b>📲 Add to Home Screen</b>Install this as an app for offline access, no browser UI</div>
+  <button class="install-btn" id="install-btn">Install</button>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('overview')">Overview</button>
+  <button class="tab-btn" onclick="showTab('day1')">Day 1 · Push</button>
+  <button class="tab-btn" onclick="showTab('day2')">Day 2 · Pull</button>
+  <button class="tab-btn" onclick="showTab('day3')">Day 3 · Delts &amp; Arms</button>
+  <button class="tab-btn" onclick="showTab('day4')">Day 4 · Chest &amp; Back</button>
+  <button class="tab-btn" onclick="showTab('day5')">Day 5 · Arms &amp; Delts</button>
+  <button class="tab-btn" onclick="showTab('nutrition')">Nutrition</button>
+  <button class="tab-btn" onclick="showTab('tips')">Tips</button>
+</div>
+
+<!-- OVERVIEW -->
+<div id="overview" class="section active">
+  <div class="sec-title">Weekly Structure</div>
+  <div class="sec-sub">Mon–Fri training · Sat–Sun rest &amp; recovery. Tap any day to view the workout.</div>
+
+  <div class="week-grid">
+    <div class="day-pill" onclick="showTab('day1')"><div class="dp-day">Mon</div><div class="dp-name" style="color:#ff6e2d">PUSH<br>CHEST+</div><div class="dp-dot" style="background:#ff6e2d"></div></div>
+    <div class="day-pill" onclick="showTab('day2')"><div class="dp-day">Tue</div><div class="dp-name" style="color:#00e5ff">PULL<br>BACK+</div><div class="dp-dot" style="background:#00e5ff"></div></div>
+    <div class="day-pill" onclick="showTab('day3')"><div class="dp-day">Wed</div><div class="dp-name" style="color:#a855f7">DELTS<br>&amp; ARMS</div><div class="dp-dot" style="background:#a855f7"></div></div>
+    <div class="day-pill" onclick="showTab('day4')"><div class="dp-day">Thu</div><div class="dp-name" style="color:#ff6e2d">CHEST<br>&amp; BACK</div><div class="dp-dot" style="background:#ff6e2d"></div></div>
+    <div class="day-pill" onclick="showTab('day5')"><div class="dp-day">Fri</div><div class="dp-name" style="color:#22d3a0">ARMS<br>&amp; DELTS</div><div class="dp-dot" style="background:#22d3a0"></div></div>
+    <div class="day-pill rest"><div class="dp-day">Sat</div><div class="dp-name">REST</div></div>
+    <div class="day-pill rest"><div class="dp-day">Sun</div><div class="dp-name">REST</div></div>
+  </div>
+
+  <div class="alert-box">
+    <b>★ Upper-body block:</b> Legs are paused for now so every session goes into chest, back, shoulders and arms. Each of those gets hit <b>2–3 times a week</b>, which is what drives the most growth. Add legs back when you're ready.</div>
+
+  <div class="info-block">
+    <h3>Weekly Hard Sets Per Muscle</h3>
+    <div class="vol-grid">
+      <div class="vol-cell"><div class="v-name">Chest</div><div class="v-num">19<small>sets</small></div></div>
+      <div class="vol-cell"><div class="v-name">Back</div><div class="v-num">20<small>sets</small></div></div>
+      <div class="vol-cell"><div class="v-name">Side Delts</div><div class="v-num">12<small>sets</small></div></div>
+      <div class="vol-cell"><div class="v-name">Rear Delts</div><div class="v-num">6<small>sets</small></div></div>
+      <div class="vol-cell"><div class="v-name">Biceps</div><div class="v-num">18<small>sets</small></div></div>
+      <div class="vol-cell"><div class="v-name">Triceps</div><div class="v-num">15<small>sets</small></div></div>
+      <div class="vol-cell"><div class="v-name">Legs</div><div class="v-num">0<small>paused</small></div></div>
+    </div>
+    <p style="font-size:12px;color:var(--text3);margin-top:10px">Direct sets only. Pressing and rowing also hit delts, triceps and biceps, so real volume is higher. Add 1–2 sets to a lagging muscle after 6 weeks.</p>
+  </div>
+
+  <div class="info-block">
+    <h3>Programme Philosophy</h3>
+    <ul class="info-list">
+      <li><b>Train close to failure.</b> Final set of every exercise: stop with 0–2 reps left. Compounds 1–2 reps in reserve, isolation 0–1.</li>
+      <li><b>Rep ranges:</b> heavy compounds 6–8, most work 8–12, isolation and delts 12–20. Anything from about 5 to 30 reps grows muscle if it's hard enough.</li>
+      <li><b>Double progression:</b> hit the top of the rep range on every set, then add the smallest weight jump. Log every session.</li>
+      <li><b>Stretch under load.</b> Fly, incline curl, and overhead extension are in because muscles grow well when loaded in the lengthened position. Lower slowly, don't bounce.</li>
+      <li><b>Compounds first,</b> isolation after. Session length 60–80 min.</li>
+      <li><b>Rest:</b> 2–4 min on heavy compounds, 60–90 sec on isolation. Short rests on big lifts cost you reps and growth.</li>
+      <li><b>Warm-up:</b> 5 min easy cardio, then 2–3 ramp-up sets on your first lift only. Not every exercise needs it.</li>
+      <li><b>Tap any exercise</b> to see the 3D form guide.</li>
+    </ul>
+  </div>
+  <div class="info-block">
+    <h3>How To Run It</h3>
+    <ul class="info-list">
+      <li><b>Weeks 1–2:</b> use the first number of sets if an exercise is new, and leave 2 reps in the tank. Learn the movements.</li>
+      <li><b>Weeks 3–8:</b> push every working set to 0–2 reps from failure and chase more reps or weight each week.</li>
+      <li><b>Week 9 (deload):</b> same exercises, half the sets, lighter weights. Then restart with the new weights. Deload sooner if lifts drop for 2 weeks in a row, joints ache or sleep falls apart.</li>
+      <li><b>Missed a day?</b> Pick up where you left off, don't double up sessions.</li>
+    </ul>
+  </div>
+</div>
+
+<div id="day1" class="section"></div>
+<div id="day2" class="section"></div>
+<div id="day3" class="section"></div>
+<div id="day4" class="section"></div>
+<div id="day5" class="section"></div>
+
+<!-- NUTRITION -->
+<div id="nutrition" class="section">
+  <div class="sec-title">Nutrition</div>
+  <div class="sec-sub">Lean bulk targets for 88.7 kg. These are estimates, so adjust them using your weekly weight trend.</div>
+
+  <div class="macro-grid">
+    <div class="macro-card cal"><div class="mc-label">Daily Calories</div><div class="mc-val">3,200</div><div class="mc-unit">kcal/day · lean bulk surplus</div></div>
+    <div class="macro-card pro"><div class="mc-label">Protein</div><div class="mc-val">180g</div><div class="mc-unit">~2g/kg · priority macro</div></div>
+    <div class="macro-card carb"><div class="mc-label">Carbohydrates</div><div class="mc-val">415g</div><div class="mc-unit">training fuel &amp; glycogen</div></div>
+    <div class="macro-card fat"><div class="mc-label">Fats</div><div class="mc-val">90g</div><div class="mc-unit">~1g/kg · hormones &amp; recovery</div></div>
+  </div>
+
+  <div class="alert-box">
+    <b>How to adjust:</b> Weigh yourself every morning and compare weekly averages. Aim for roughly <b>0.25–0.4 kg gained per week</b>. Gaining faster than 0.5 kg/week mostly adds fat, so drop 150 kcal (take it from carbs). Flat for 2–3 weeks? Add 150 kcal. Your weight has changed since the last version, so expect to retune once or twice in the first month.
+  </div>
+
+  <div class="info-block">
+    <h3>Best Protein Sources</h3>
+    <ul class="info-list">
+      <li><b>Chicken breast / thigh</b> — 30–35g protein per 150g serving</li>
+      <li><b>Eggs + egg whites</b> — easy, versatile, complete amino acid profile</li>
+      <li><b>Greek yogurt / cottage cheese</b> — casein protein, great before bed</li>
+      <li><b>White fish (cod, tilapia, tuna)</b> — lean, high protein, easy to prep</li>
+      <li><b>Red meat (mince, steak)</b> — 2–3x per week for creatine + iron</li>
+      <li><b>Whey protein shake</b> — 1 scoop if hitting 180g from food is hard</li>
+    </ul>
+  </div>
+  <div class="info-block">
+    <h3>Meal Timing</h3>
+    <ul class="info-list">
+      <li><b>Pre-workout (1–2 hrs before):</b> carb-heavy — rice, pasta, oats + protein</li>
+      <li><b>Post-workout:</b> protein + carbs within a couple of hours — shake + banana, chicken + white rice</li>
+      <li><b>Before bed:</b> slow protein — Greek yogurt, cottage cheese, or casein</li>
+      <li><b>Through the day:</b> spread protein over 4–5 meals, about 35–50g each</li>
+      <li><b>Hydration:</b> 3–4 litres of water per day on training days</li>
+      <li><b>Struggling to eat 3,200?</b> Drink some calories (milk, smoothies with oats and peanut butter) and add olive oil or nuts to meals.</li>
+    </ul>
+  </div>
+  <div class="info-block">
+    <h3>Supplements (Minimal &amp; Effective)</h3>
+    <ul class="info-list">
+      <li><b>Creatine Monohydrate — 5g/day:</b> the best-studied supplement for size and strength. Take it daily, timing doesn't matter, no loading needed.</li>
+      <li><b>Whey Protein:</b> only to help hit protein. It's convenient food, not magic.</li>
+      <li><b>Vitamin D3:</b> useful if you get little sun, especially in winter.</li>
+      <li><b>Omega-3 Fish Oil:</b> optional. Fine if you don't eat much fish.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- TIPS -->
+<div id="tips" class="section">
+  <div class="sec-title">Rules &amp; Tips</div>
+  <div class="sec-sub">The things that actually separate progress from plateaus</div>
+
+  <div class="info-block" style="margin-bottom:16px">
+    <h3>Double Progression — Your #1 Rule</h3>
+    <div class="progress-step"><div class="step-num">1</div><div class="step-text"><b>Pick a weight</b> that gets you into the bottom of the rep range with 0–2 reps left on your last set.</div></div>
+    <div class="progress-step"><div class="step-num">2</div><div class="step-text"><b>Add reps each week</b> until every set hits the top of the range (e.g. 3×12 at the same weight).</div></div>
+    <div class="progress-step"><div class="step-num">3</div><div class="step-text"><b>Then add the smallest jump</b> — 2.5 kg upper body, 5 kg lower. Reps drop back to the bottom of the range and you climb again.</div></div>
+    <div class="progress-step"><div class="step-num">4</div><div class="step-text"><b>Log every session</b> — weight, reps, and how close to failure you were. If you can't beat last week, check sleep and food before changing the plan.</div></div>
+  </div>
+
+  <div class="tips-grid">
+    <div class="tip-card"><div class="tip-icon">🎯</div><div class="tip-title">Effort is the multiplier</div><div class="tip-body">Sets only count if they're <b>hard</b>. Stopping 4–5 reps short on everything is the most common reason people stall.</div></div>
+    <div class="tip-card"><div class="tip-icon">😴</div><div class="tip-title">Sleep is non-negotiable</div><div class="tip-body">You grow while you recover. Aim for <b>8–9 hours</b>. Bad sleep drops performance and recovery more than any supplement can fix.</div></div>
+    <div class="tip-card"><div class="tip-icon">📋</div><div class="tip-title">Track your food</div><div class="tip-body">Use <b>MyFitnessPal or Cronometer</b> for at least 4 weeks. Most people overestimate how much they eat.</div></div>
+    <div class="tip-card"><div class="tip-icon">📏</div><div class="tip-title">Track your body</div><div class="tip-body">Weigh <b>every morning</b> after the bathroom and use the weekly average. Take monthly photos and measure arms, chest and thighs.</div></div>
+    <div class="tip-card"><div class="tip-icon">⚠️</div><div class="tip-title">Form before weight</div><div class="tip-body"><b>Never sacrifice form for ego,</b> especially presses and rows. Controlled reps with a full stretch grow more than sloppy heavy ones.</div></div>
+    <div class="tip-card"><div class="tip-icon">🔄</div><div class="tip-title">Deload every 6–8 weeks</div><div class="tip-body">Cut sets in half for one week. You'll come back stronger and your joints will thank you. <b>It's not lost progress.</b></div></div>
+    <div class="tip-card"><div class="tip-icon">🏃</div><div class="tip-title">Easy cardio is fine</div><div class="tip-body">A <b>20–30 min walk</b> on rest days helps recovery and appetite without eating into gains.</div></div>
+    <div class="tip-card"><div class="tip-icon">📅</div><div class="tip-title">Run it 12+ weeks</div><div class="tip-body">Muscle takes months, not weeks. <b>The best programme is the one you execute consistently.</b></div></div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- 3D EXERCISE DEMO MODAL -->
+<div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-title">Barbell Bench Press</div>
+        <div class="modal-subtitle" id="modal-subtitle">Tap the canvas to pause/resume · Side view</div>
+      </div>
+      <button class="modal-close" onclick="closeDemo()">✕</button>
+    </div>
+    <div class="demo-stage">
+      <canvas class="demo-canvas" id="demo-canvas"></canvas>
+      <div class="demo-label">3D FORM GUIDE</div>
+      <div class="phase-indicator" id="phase-indicator">ECCENTRIC</div>
+    </div>
+    <div class="modal-body">
+      <div class="cue-grid">
+        <div class="cue-card"><div class="cue-label">Sets</div><div class="cue-val" id="cue-sets">4 sets</div></div>
+        <div class="cue-card"><div class="cue-label">Reps</div><div class="cue-val" id="cue-reps">6–8 reps</div></div>
+        <div class="cue-card"><div class="cue-label">Tempo</div><div class="cue-val" id="cue-tempo">2-0-1</div></div>
+        <div class="cue-card"><div class="cue-label">Rest</div><div class="cue-val" id="cue-rest">3 min</div></div>
+      </div>
+      <div style="margin-bottom:10px;font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.08em;color:var(--text2)">FORM CUES</div>
+      <ul class="form-tips" id="form-tips"></ul>
+      <div class="muscle-tags" id="muscle-tags"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TAB NAVIGATION ──
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const map = {overview:0,day1:1,day2:2,day3:3,day4:4,day5:5,nutrition:6,tips:7};
+  document.querySelectorAll('.tab-btn')[map[id]].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── PWA INSTALL ──
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-banner').classList.add('show');
+});
+document.getElementById('install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const {outcome} = await deferredPrompt.userChoice;
+  if (outcome === 'accepted') document.getElementById('install-banner').classList.remove('show');
+  deferredPrompt = null;
+});
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-banner').classList.remove('show');
+});
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+
+// ── EXERCISE DATA (single source of truth for sets/reps/rest) ──
+const EXERCISES = {
+  bench_press: {
+    name:'Barbell Bench Press', sets:4, reps:'6–8', tempo:'2-1-1', rest:'3 min',
+    tips:['<b>Retract your shoulder blades</b> and drive them into the bench before unracking','<b>Grip slightly wider than shoulder-width.</b> Thumbs wrapped around the bar always','<b>Lower the bar to mid-chest</b> with control — 2 seconds down','<b>Press in a slight arc</b> — bar ends slightly over your eyes at the top','<b>Drive your feet into the floor</b> throughout the movement for leg drive'],
+    muscles:['Chest (Primary)','Front Delts','Triceps','Serratus Anterior'], primary:['Chest (Primary)'], anim:'bench'
+  },
+  incline_db_press: {
+    name:'Incline Dumbbell Press', sets:3, reps:'8–12', tempo:'2-0-1', rest:'2 min',
+    tips:['<b>Set bench to 30–45°.</b> Any higher shifts load from chest to shoulders','<b>Touch dumbbells at the top</b> for peak contraction — don\'t let them crash together','<b>Control the descent</b> — feel a deep stretch at the bottom of each rep','<b>Drive your elbows slightly inward</b> on the press (not fully flared out)','<b>Neutral wrist</b> — keep wrists stacked above elbows throughout'],
+    muscles:['Upper Chest (Primary)','Front Delts','Triceps'], primary:['Upper Chest (Primary)'], anim:'incline_press'
+  },
+  cable_fly: {
+    name:'Cable Fly (Low-to-High)', sets:3, reps:'12–15', tempo:'2-1-1', rest:'90s',
+    tips:['<b>Set cables at ankle/low height.</b> Step forward to create tension at start','<b>Maintain a slight bend in your elbows</b> throughout — don\'t turn it into a press','<b>Focus on the squeeze</b> — pause for 1 second at the top of the arc','<b>Control the return</b> — get a deep stretch across the chest at the bottom','<b>Lean slightly forward</b> at the hips for a better line of pull'],
+    muscles:['Upper Chest (Primary)','Front Delts'], primary:['Upper Chest (Primary)'], anim:'fly'
+  },
+  db_shoulder_press: {
+    name:'Dumbbell Shoulder Press', sets:3, reps:'8–12', tempo:'2-0-1', rest:'2 min',
+    tips:['<b>Sit upright on a bench with back support</b> — avoid arching the lower back','<b>Start with dumbbells at ear height,</b> palms facing forward','<b>Press directly overhead</b> — don\'t let the dumbbells drift forward','<b>Don\'t fully lock out</b> at the top — keep tension on the delts','<b>Lower with control</b> to feel the stretch in the shoulders'],
+    muscles:['Front Delts (Primary)','Side Delts','Triceps','Upper Traps'], primary:['Front Delts (Primary)','Side Delts'], anim:'shoulder_press'
+  },
+  lateral_raise: {
+    name:'Dumbbell Lateral Raise', sets:4, reps:'12–20', tempo:'2-1-2', rest:'90s',
+    tips:['<b>Slight forward lean at the hips</b> (10–15°) to get the side delt in a better position','<b>Pinky slightly higher than thumb</b> as you raise — isolates the side delt better','<b>Raise to ear height</b> — going higher shifts load to traps','<b>2-second lowering phase</b> — this is where the growth stimulus is. Don\'t just drop them','<b>Light weight, high quality</b> — ego kills this exercise. Last 2–3 reps should burn'],
+    muscles:['Side Delts (Primary)','Front Delts','Supraspinatus'], primary:['Side Delts (Primary)'], anim:'lat_raise'
+  },
+  overhead_tri_ext: {
+    name:'Overhead Tricep Extension', sets:3, reps:'12–15', tempo:'2-0-1', rest:'90s',
+    tips:['<b>Keep elbows pointing forward</b> and close to your head — don\'t let them flare','<b>Lower the dumbbell behind your head</b> until you feel a full stretch in the long head','<b>Press to full extension</b> — squeeze the tricep at the top','<b>Brace your core</b> — don\'t let the lower back arch to compensate','<b>Best long-head exercise</b> — the stretch position is where the growth happens'],
+    muscles:['Triceps Long Head (Primary)','Triceps Lateral Head'], primary:['Triceps Long Head (Primary)'], anim:'tri_ext'
+  },
+  tricep_pushdown: {
+    name:'Tricep Pushdown (Rope)', sets:3, reps:'12–15', tempo:'2-1-1', rest:'90s',
+    tips:['<b>Pin your elbows tight to your sides</b> — don\'t let them flare out','<b>At full extension, spread the rope ends apart</b> for maximum contraction','<b>Hinge slightly forward</b> at the hips — don\'t stand bolt upright','<b>Slow eccentric</b> — don\'t let the rope fly back up; control it','<b>Feel every rep</b> — this is an isolation move, so mind-muscle connection matters'],
+    muscles:['Triceps (Primary)','Anconeus'], primary:['Triceps (Primary)'], anim:'pushdown'
+  },
+  lat_pulldown: {
+    name:'Lat Pulldown', sets:4, reps:'8–12', tempo:'2-1-1', rest:'2 min',
+    tips:['<b>Grip just outside shoulder-width.</b> Thumbs can hook under (false grip) for better lat activation','<b>Lean back ~15°</b> and pull the bar to your upper chest — not behind your neck','<b>Lead with your elbows</b> — think "drive elbows into your back pockets"','<b>Pause at the bottom</b> — hold for 1 second with lats fully contracted','<b>Control the ascent</b> — get a full lat stretch as arms extend'],
+    muscles:['Latissimus Dorsi (Primary)','Biceps','Rear Delts','Rhomboids'], primary:['Latissimus Dorsi (Primary)'], anim:'lat_pulldown'
+  },
+  cable_row: {
+    name:'Seated Cable Row', sets:3, reps:'10–12', tempo:'2-1-1', rest:'2 min',
+    tips:['<b>Sit tall — neutral spine throughout.</b> Don\'t round your lower back under load','<b>Pull to your lower chest / upper abdomen</b> with a neutral grip handle','<b>Squeeze shoulder blades together</b> at full contraction — pause for 1 second','<b>Full arm extension on return</b> — let your shoulder blades stretch forward','<b>Hinge from the hips slightly</b> on the stretch but don\'t use momentum to row'],
+    muscles:['Lats (Primary)','Rhomboids (Primary)','Biceps','Rear Delts'], primary:['Lats (Primary)','Rhomboids (Primary)'], anim:'cable_row'
+  },
+  db_row: {
+    name:'Single-Arm Dumbbell Row', sets:3, reps:'10–12', tempo:'2-0-1', rest:'90s',
+    tips:['<b>Brace your free hand on the bench</b> — back should be parallel to the floor','<b>Let the dumbbell hang with full arm extension</b> at the bottom — full stretch','<b>Drive your elbow up and back</b> toward your hip, not your shoulder','<b>Row as heavy as you can</b> with control — this is a mass builder','<b>Don\'t rotate your torso</b> to get extra range — keep hips and shoulders square'],
+    muscles:['Lats (Primary)','Rhomboids','Biceps','Rear Delts'], primary:['Lats (Primary)'], anim:'db_row'
+  },
+  face_pull: {
+    name:'Face Pull (Rope)', sets:3, reps:'15–20', tempo:'2-1-1', rest:'60s',
+    tips:['<b>Cable at face height.</b> Use the rope attachment — grip both ends','<b>Pull to your forehead,</b> not your neck or chin','<b>Externally rotate at the end</b> — knuckles point behind you at full contraction','<b>Elbows flare wide</b> and stay at ear level throughout','<b>Great for rear delts and shoulder health</b> — keep the weight light and the reps clean'],
+    muscles:['Rear Delts (Primary)','External Rotators','Rhomboids','Mid Traps'], primary:['Rear Delts (Primary)','External Rotators'], anim:'face_pull'
+  },
+  incline_curl: {
+    name:'Incline Dumbbell Curl', sets:3, reps:'10–12', tempo:'2-0-1', rest:'90s',
+    tips:['<b>Set bench to 45–60°.</b> Sit back, arms hang freely behind your body','<b>Maximum stretch position</b> for the bicep long head — it\'s supposed to feel intense','<b>Curl from that hang position</b> — do NOT "reset" by pulling your arms forward first','<b>Supinate fully at the top</b> — pinky rotates up. Squeeze hard','<b>One of the best bicep exercises</b> — the pre-stretched position creates huge mechanical tension'],
+    muscles:['Biceps Long Head (Primary)','Biceps Short Head','Brachialis'], primary:['Biceps Long Head (Primary)'], anim:'incline_curl'
+  },
+  hammer_curl: {
+    name:'Hammer Curl', sets:3, reps:'12–15', tempo:'2-0-1', rest:'90s',
+    tips:['<b>Neutral grip (palms facing each other)</b> throughout the entire movement','<b>Curl directly in front of you</b> — thumbs point toward ceiling at top','<b>Keep elbows pinned to sides</b> — isolate the brachialis and brachioradialis','<b>Alternate arms</b> for better control, or do both together to save time','<b>Don\'t lean back</b> — strict form only'],
+    muscles:['Brachialis (Primary)','Biceps','Brachioradialis'], primary:['Brachialis (Primary)'], anim:'hammer_curl'
+  },
+  preacher_curl: {
+    name:'EZ-Bar Preacher Curl', sets:3, reps:'10–12', tempo:'2-1-1', rest:'90s',
+    tips:['<b>Upper arms flat against the pad</b> — don\'t let them rise off the pad to cheat','<b>Lower to full extension</b> — feel the full stretch at the bottom. This is crucial','<b>Use the inner grip of the EZ-bar</b> — better supination = more bicep activation','<b>Curl to chin level</b> — control the negative, don\'t let the bar slam down','<b>No body swing possible</b> — every rep is pure bicep work'],
+    muscles:['Biceps (Primary)','Brachialis'], primary:['Biceps (Primary)'], anim:'barbell_curl'
+  },
+  squat: {
+    name:'Barbell Back Squat', sets:4, reps:'6–8', tempo:'3-0-1', rest:'3 min',
+    tips:['<b>Bar on upper traps (high bar) or lower traps (low bar)</b> — both are valid. Start high bar','<b>Feet shoulder to slightly wider,</b> toes out 20–30°','<b>Brace your entire core</b> like you\'re about to be punched. Hold this the whole rep','<b>Hip crease below parallel</b> — full range of motion','<b>Knees track over toes</b> throughout — don\'t let them cave inward on the way up'],
+    muscles:['Quads (Primary)','Glutes (Primary)','Hamstrings','Adductors','Core'], primary:['Quads (Primary)','Glutes (Primary)'], anim:'squat'
+  },
+  leg_press: {
+    name:'Leg Press', sets:3, reps:'10–12', tempo:'2-0-1', rest:'2 min',
+    tips:['<b>Feet low and shoulder-width</b> for quads, <b>high on the platform</b> for glutes and hamstrings','<b>Toes slightly outward</b>, push through the whole foot','<b>Lower until knees are at about 90°</b> or deeper — don\'t let your lower back peel off the pad','<b>Don\'t lock out your knees</b> at the top — keep tension on the muscles','<b>Slow lowering</b> — 2–3 seconds, no bouncing at the bottom'],
+    muscles:['Quads (Primary)','Glutes','Hamstrings'], primary:['Quads (Primary)'], anim:'leg_press'
+  },
+  leg_extension: {
+    name:'Leg Extension', sets:3, reps:'12–15', tempo:'2-1-1', rest:'90s',
+    tips:['<b>Adjust the seat</b> so your knees line up with the machine\'s pivot','<b>Squeeze hard at the top</b> and hold for 1 second','<b>Lower slowly</b> — 2–3 seconds back down, don\'t drop the weight','<b>Lean back slightly</b> on the pad to better stretch the rectus femoris','<b>Last set: push to failure</b> — it\'s a safe machine to train really hard'],
+    muscles:['Quads (Primary)','Rectus Femoris'], primary:['Quads (Primary)'], anim:'leg_ext'
+  },
+  rdl: {
+    name:'Romanian Deadlift (RDL)', sets:3, reps:'8–10', tempo:'3-1-1', rest:'2 min',
+    tips:['<b>Start from the top.</b> Hold bar at hip height, slight bend in knees (fixed throughout)','<b>Push your hips backward</b> as the bar travels down your legs — feel the hamstrings loading','<b>Keep the bar close</b> — touching your legs the whole time','<b>Stop when your lower back starts to round</b> — that\'s your end range for now','<b>Drive hips forward</b> to return to standing — squeeze glutes at the top'],
+    muscles:['Hamstrings (Primary)','Glutes (Primary)','Erector Spinae','Lats'], primary:['Hamstrings (Primary)','Glutes (Primary)'], anim:'rdl'
+  },
+  leg_curl: {
+    name:'Leg Curl', sets:3, reps:'12–15', tempo:'2-1-1', rest:'90s',
+    tips:['<b>Lying or seated — both work.</b> Seated keeps better hamstring tension throughout','<b>Full range of motion.</b> Extend fully at the bottom, curl as far as possible at top','<b>Point toes slightly inward</b> for more biceps femoris activation','<b>Don\'t let your hips rise</b> off the pad — that\'s momentum, not muscle','<b>Pause at the top</b> for 1 second — squeeze the hamstring hard'],
+    muscles:['Hamstrings (Primary)','Gastrocnemius'], primary:['Hamstrings (Primary)'], anim:'leg_curl'
+  },
+  calf_raise: {
+    name:'Seated Calf Raise', sets:4, reps:'15–20', tempo:'2-2-1', rest:'60s',
+    tips:['<b>Full plantarflexion</b> at the top — up on your toes as high as possible','<b>Drop the heels fully</b> at the bottom until you feel a deep calf stretch','<b>Slow eccentrics</b> — lower for 2+ seconds every rep','<b>No bouncing</b> at the bottom. Touch and hold the stretch for 1 second','<b>Seated targets the soleus</b> (deeper calf) — different from standing calf raises'],
+    muscles:['Soleus (Primary)','Gastrocnemius'], primary:['Soleus (Primary)'], anim:'calf_raise'
+  },
+  cable_crunch: {
+    name:'Cable Crunch', sets:3, reps:'15–20', tempo:'2-1-1', rest:'60s',
+    tips:['<b>Kneel facing the cable stack</b> with the rope attachment at head height','<b>Hold rope on either side of your face</b> — don\'t pull with your arms','<b>Crunch by rounding your upper spine</b> — the movement comes from your abs, not your hips','<b>Tuck your chin to your chest</b> as you crunch down','<b>Don\'t sit back on your heels</b> — stay upright and let the abs do the work'],
+    muscles:['Rectus Abdominis (Primary)','Obliques'], primary:['Rectus Abdominis (Primary)'], anim:'crunch'
+  },
+  incline_barbell: {
+    name:'Incline Barbell Press', sets:3, reps:'8–10', tempo:'2-0-1', rest:'2 min',
+    tips:['<b>Same setup as flat bench</b> — shoulder blades retracted, feet on floor','<b>30–45° incline.</b> Use the same pin angle each week so progress is comparable','<b>Bar descends to upper chest</b> (collar bone area) — higher than flat bench','<b>Drive the bar in a slight arc</b> back over your eye line at the top','<b>Second chest session of the week</b> — use it for extra upper chest volume'],
+    muscles:['Upper Chest (Primary)','Front Delts','Triceps'], primary:['Upper Chest (Primary)'], anim:'incline_press'
+  },
+  cable_fly_mid: {
+    name:'Cable Fly (Mid Position)', sets:3, reps:'12–15', tempo:'2-1-1', rest:'90s',
+    tips:['<b>Cables set at chest height.</b> Step forward, one foot in front for stability','<b>Maintain a slight fixed elbow bend</b> — don\'t let it become a press','<b>Bring hands together in front of your chest</b> — pause and squeeze for 1 second','<b>Let the arms open widely on the return</b> — feel the chest stretch at full extension','<b>Light weight and great form</b> — this is about the squeeze, not the load'],
+    muscles:['Chest (Primary)','Front Delts'], primary:['Chest (Primary)'], anim:'fly'
+  },
+  cable_lateral: {
+    name:'Cable Lateral Raise', sets:4, reps:'15–20', tempo:'2-1-2', rest:'60s',
+    tips:['<b>Cable set at ankle height.</b> Stand side-on to the stack','<b>Cross the cable in front of you</b> — working arm is the one away from the cable stack','<b>Same technique as dumbbell</b> — slight lean, pinky up, ear height','<b>Cable provides constant tension</b> throughout, unlike dumbbells which have a dead spot at the bottom','<b>Alternate sides</b> between sets — one side rests while the other works'],
+    muscles:['Side Delts (Primary)','Supraspinatus'], primary:['Side Delts (Primary)'], anim:'cable_lat'
+  },
+  skull_crushers: {
+    name:'Skull Crushers (EZ-Bar)', sets:3, reps:'10–12', tempo:'2-0-1', rest:'90s',
+    tips:['<b>Lie flat on bench.</b> Hold EZ-bar at inner grips with elbows over your face','<b>Lower the bar toward your forehead</b> — 2 seconds down, under control','<b>Elbows stay fixed in space</b> — only your forearms move','<b>Extend fully at the top</b> — squeeze the triceps hard','<b>If elbows hurt, angle your arms slightly back</b> so the bar goes behind your head'],
+    muscles:['Triceps (Primary)','Anconeus'], primary:['Triceps (Primary)'], anim:'skull_crusher'
+  },
+};
+
+// ── WORKOUT PLAN: [exerciseId, note, priorityStar] ──
+const DAYS = {
+  day1:{tag:'Monday · Day 1', title:'PUSH', color:'#ff6e2d', badge:'★ Chest & Delts', summary:'<b>Chest 10 sets · Delts 7 · Triceps 6</b> · about 70 min', rows:[
+    ['bench_press','Heavy compound. 2 sec down, full range. Last set 1–2 reps from failure.',1],
+    ['incline_db_press','30–45° incline. Deep stretch at the bottom. Upper chest focus.',1],
+    ['db_shoulder_press','Seated. Don\'t flare elbows too wide. Slow on the way down.',0],
+    ['cable_fly','Cables low, sweep upward. Big stretch, squeeze at the top.',1],
+    ['lateral_raise','Light and strict. Push the last set to failure with 12–20 reps.',1],
+    ['overhead_tri_ext','Long-head stretch. Lower behind the head, full lockout.',0],
+    ['tricep_pushdown','Elbows pinned. Spread the rope at the bottom. Finisher.',0]
+  ]},
+  day2:{tag:'Tuesday · Day 2', title:'PULL', color:'#00e5ff', badge:'Back Width + Thickness', summary:'<b>Back 10 sets · Biceps 6 · Rear delts 3</b> · about 65 min', rows:[
+    ['lat_pulldown','Pull to upper chest, lean back slightly. Full stretch at the top.',1],
+    ['cable_row','Neutral grip. Pause and squeeze shoulder blades at the end.',0],
+    ['db_row','Brace on the bench. Elbow to hip, full stretch at the bottom.',0],
+    ['face_pull','Rear delts and shoulder health. Light weight, clean reps.',0],
+    ['incline_curl','Arms hang behind. Maximum biceps stretch.',1],
+    ['hammer_curl','Neutral grip. Adds arm thickness through the brachialis.',0]
+  ]},
+  day3:{tag:'Wednesday · Day 3', title:'SHOULDERS & ARMS', color:'#a855f7', badge:'★ Delts & Arms', summary:'<b>Delts 10 sets · Biceps 6 · Triceps 3</b> · about 60 min', rows:[
+    ['db_shoulder_press','Seated. Press straight up, slow on the way down.',1],
+    ['lateral_raise','Light and strict. Push the last set to failure.',1],
+    ['face_pull','Rear delts and shoulder health. Light, clean reps.',0],
+    ['preacher_curl','Full stretch at the bottom. No swinging.',0],
+    ['skull_crushers','Elbows fixed. Slow lowering, full extension.',0],
+    ['hammer_curl','Neutral grip. Adds arm thickness through the brachialis.',0]
+  ]},
+  day4:{tag:'Thursday · Day 4', title:'CHEST & BACK', color:'#ff6e2d', badge:'★ Torso Day', summary:'<b>Chest 6 sets · Back 10</b> · about 60 min', rows:[
+    ['incline_barbell','Second chest session. Same incline pin every week.',1],
+    ['lat_pulldown','Pull to upper chest, lean back slightly. Full stretch at the top.',1],
+    ['cable_fly_mid','Chest height. Deep stretch, squeeze at the middle.',0],
+    ['cable_row','Back thickness. Pause and squeeze at the end.',0],
+    ['db_row','Heavy and controlled. Elbow to hip, full stretch at the bottom.',0]
+  ]},
+  day5:{tag:'Friday · Day 5', title:'ARMS & DELTS', color:'#22d3a0', badge:'Pump Day', summary:'<b>Side delts 4 · Biceps 6 · Triceps 6 · Chest 3</b> · about 60 min', rows:[
+    ['cable_lateral','Constant tension for side delts. Alternate sides, 15–20 reps.',1],
+    ['incline_curl','Arms hang behind. Maximum biceps stretch.',0],
+    ['overhead_tri_ext','Long-head stretch. Lower behind the head, full lockout.',0],
+    ['hammer_curl','Controlled reps. Squeeze at the top.',0],
+    ['tricep_pushdown','Elbows pinned. Spread the rope at the bottom.',0],
+    ['cable_fly','Chest pump to finish. Big stretch, squeeze at the top.',0]
+  ]}
+};
+
+function hexToRgb(hex){
+  const n=parseInt(hex.slice(1),16);
+  return [(n>>16)&255,(n>>8)&255,n&255].join(',');
+}
+
+function renderDays(){
+  Object.keys(DAYS).forEach(id=>{
+    const d=DAYS[id], rgb=hexToRgb(d.color);
+    const rows=d.rows.map((r,i)=>{
+      const ex=EXERCISES[r[0]];
+      return `<div class="ex-row" onclick="openDemo('${r[0]}')">
+        <div class="ex-num">${String(i+1).padStart(2,'0')}</div>
+        <div><div class="ex-name-main">${ex.name}${r[2]?' <span class="priority-star">★</span>':''}</div><div class="ex-note">${r[1]}</div></div>
+        <div class="ex-stat">${ex.sets}</div><div class="ex-stat">${ex.reps}</div><div class="ex-stat">${ex.rest}</div>
+      </div>`;
+    }).join('');
+    document.getElementById(id).innerHTML=`
+      <div class="workout-card">
+        <div class="wc-header">
+          <div><div class="wc-tag">${d.tag}</div><div class="wc-title" style="color:${d.color}">${d.title}</div></div>
+          <div class="wc-badge" style="background:rgba(${rgb},0.12);color:${d.color};border:1px solid rgba(${rgb},0.3)">${d.badge}</div>
+        </div>
+        <div class="wc-summary">${d.summary}</div>
+        <div class="ex-header-row">
+          <div class="ex-col-lbl">#</div><div class="ex-col-lbl" style="text-align:left">Exercise (tap for demo)</div>
+          <div class="ex-col-lbl">Sets</div><div class="ex-col-lbl">Reps</div><div class="ex-col-lbl">Rest</div>
+        </div>
+        ${rows}
+      </div>`;
+  });
+}
+renderDays();
+
+// ── 3D ANIMATION ENGINE ──
+const canvas = document.getElementById('demo-canvas');
+const ctx = canvas.getContext('2d');
+let animReq = null, paused = false, t = 0;
+let currentAnim = 'bench', currentPhase = 'ECCENTRIC';
+
+canvas.addEventListener('click', () => { paused = !paused; });
+
+function resizeCanvas() {
+  const stage = canvas.parentElement;
+  canvas.width = stage.clientWidth;
+  canvas.height = stage.clientHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+const C = {
+  bg1:'#0a0f1e', bg2:'#0d1628',
+  joint:'#00e5ff', bone:'rgba(0,229,255,0.7)',
+  muscle_active:'#ff6e2d',
+  bar:'#94a3b8', bar_highlight:'#cbd5e1',
+  bench_top:'#1e3a5f', bench_leg:'#172a45',
+  grid:'rgba(0,229,255,0.04)', floor:'rgba(0,229,255,0.12)',
+};
+
+function drawBackground() {
+  const w = canvas.width, h = canvas.height;
+  const grad = ctx.createLinearGradient(0,0,0,h);
+  grad.addColorStop(0, C.bg1); grad.addColorStop(1, C.bg2);
+  ctx.fillStyle = grad; ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle = C.grid; ctx.lineWidth = 1;
+  for(let x=0;x<w;x+=40){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,h);ctx.stroke();}
+  for(let y=0;y<h;y+=40){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}
+  ctx.strokeStyle = C.floor; ctx.lineWidth = 2;
+  ctx.beginPath();ctx.moveTo(0,h*0.82);ctx.lineTo(w,h*0.82);ctx.stroke();
+}
+
+function drawJoint(x,y,r=5,glow=false){
+  if(glow){ctx.shadowColor=C.joint;ctx.shadowBlur=12;}
+  ctx.fillStyle=C.joint;
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;
+}
+
+function drawBone(x1,y1,x2,y2,w=4,active=false){
+  ctx.strokeStyle=active?C.muscle_active:C.bone;
+  ctx.lineWidth=w; ctx.lineCap='round';
+  if(active){ctx.shadowColor=C.muscle_active;ctx.shadowBlur=8;}
+  ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+  ctx.shadowBlur=0;
+}
+
+function drawBar(x,y,len=120,angle=0){
+  ctx.save();
+  ctx.translate(x,y);ctx.rotate(angle);
+  const grad=ctx.createLinearGradient(-len/2,-8,len/2,8);
+  grad.addColorStop(0,C.bar);grad.addColorStop(0.5,C.bar_highlight);grad.addColorStop(1,C.bar);
+  ctx.fillStyle=grad;
+  ctx.beginPath();ctx.roundRect(-len/2,-5,len,10,3);ctx.fill();
+  [[-len/2-4,-14],[-len/2-4,4],[len/2-4,-14],[len/2-4,4]].forEach(([px,py])=>{
+    ctx.fillStyle='#374151';
+    ctx.beginPath();ctx.roundRect(px,py,12,20,2);ctx.fill();
+  });
+  ctx.restore();
+}
+
+function drawBench(cx,cy){
+  const h2=canvas.height;
+  ctx.fillStyle=C.bench_top;
+  ctx.beginPath();ctx.roundRect(cx-90,cy-12,180,24,6);ctx.fill();
+  ctx.strokeStyle='rgba(0,229,255,0.15)';ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle=C.bench_leg;
+  [[cx-70,cy+12],[cx+70,cy+12]].forEach(([lx,ly])=>{
+    ctx.beginPath();ctx.roundRect(lx-8,ly,16,h2*0.82-ly,3);ctx.fill();
+  });
+}
+
+const anims = {
+  bench(t,w,h){
+    const cy=h*0.58, cx=w*0.5;
+    const lift=Math.max(0,Math.sin(t));
+    const barY=cy-30-lift*60;
+    const phase=Math.sin(t)>0?'CONCENTRIC':'ECCENTRIC';
+    currentPhase=phase;
+    drawBench(cx,cy+10);
+    const sx=cx-50,sy=cy-8;
+    drawBone(sx,sy,sx+100,sy,8,false);
+    drawJoint(sx+115,sy,10);
+    drawBone(sx-10,sy,sx-40,cy+8,6,false);
+    drawBone(sx-40,cy+8,sx-30,cy+24,6,false);
+    const shoulderX=sx+80,shoulderY=sy;
+    const elbowLift=lift*25;
+    const elbowX=shoulderX-20,elbowY=shoulderY-20-elbowLift;
+    const handX=elbowX,handY=barY;
+    drawBone(shoulderX,shoulderY,elbowX,elbowY,5,phase==='CONCENTRIC');
+    drawBone(elbowX,elbowY,handX,handY,5,phase==='CONCENTRIC');
+    drawBone(shoulderX,shoulderY,shoulderX+40,elbowY,5,phase==='CONCENTRIC');
+    drawBone(shoulderX+40,elbowY,shoulderX+40,barY,5,phase==='CONCENTRIC');
+    drawBar(cx,barY,160);
+    [sx,sx+20,sx+40,sx+60,sx+80,sx+100,sx+115].forEach((jx,i)=>drawJoint(jx,sy,i===3?7:5,i===3));
+    drawJoint(elbowX,elbowY,5,true); drawJoint(elbowX,barY,5,true);
+    drawJoint(shoulderX+40,elbowY,5,true); drawJoint(shoulderX+40,barY,5,true);
+  },
+
+  incline_press(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const angle=Math.PI/5;
+    const lift=Math.max(0,Math.sin(t));
+    ctx.fillStyle=C.bench_top;
+    ctx.save();ctx.translate(cx-20,floor-80);ctx.rotate(-angle);
+    ctx.beginPath();ctx.roundRect(-100,-12,200,24,6);ctx.fill();
+    ctx.strokeStyle='rgba(0,229,255,0.15)';ctx.lineWidth=1;ctx.stroke();
+    ctx.restore();
+    const spineX=cx-20,spineY=floor-80;
+    const headX=spineX+Math.cos(Math.PI/2-angle)*80;
+    const headY=spineY-Math.sin(Math.PI/2-angle)*80;
+    drawBone(spineX,spineY,headX,headY,7,false);
+    drawJoint(headX+10,headY-10,10);
+    const eLift=lift*45;
+    const dY=headY-30-eLift;
+    drawBone(headX-20,headY+10,headX-50,headY-20-eLift*0.5,5,true);
+    drawBone(headX-50,headY-20-eLift*0.5,headX-45,dY,5,true);
+    drawBone(headX+20,headY+10,headX+50,headY-20-eLift*0.5,5,true);
+    drawBone(headX+50,headY-20-eLift*0.5,headX+45,dY,5,true);
+    [[headX-45,dY],[headX+45,dY]].forEach(([dx,dy])=>{
+      ctx.fillStyle='#374151';
+      ctx.beginPath();ctx.roundRect(dx-14,-6+dy,28,12,4);ctx.fill();
+      drawJoint(dx,dy,4);
+    });
+    currentPhase=lift>0.5?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  fly(t,w,h){
+    const cx=w*0.5,cy=h*0.5;
+    const open=Math.max(0,-Math.sin(t));
+    const armSpread=open*80;
+    drawBone(cx,cy+60,cx,cy-30,7,false);
+    drawJoint(cx,cy-40,10);
+    drawBone(cx,cy+60,cx-20,cy+110,6,false);
+    drawBone(cx,cy+60,cx+20,cy+110,6,false);
+    const lx=cx-50-armSpread,ly=cy;
+    const rx=cx+50+armSpread,ry=cy;
+    drawBone(cx-15,cy-10,lx,ly,5,armSpread<30);
+    drawBone(cx+15,cy-10,rx,ry,5,armSpread<30);
+    ctx.strokeStyle=open>0.3?C.muscle_active:'rgba(0,229,255,0.4)';
+    ctx.lineWidth=2;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(0,cy);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(rx,ry);ctx.lineTo(w,cy);ctx.stroke();
+    ctx.setLineDash([]);
+    drawJoint(lx,ly,5,true);drawJoint(rx,ry,5,true);
+    [cx,cx-15,cx+15,cx,cx-20,cx+20].forEach((jx,i)=>drawJoint(jx,[cy-30,cy-10,cy-10,cy+60,cy+110,cy+110][i],5));
+    currentPhase=open>0.3?'ECCENTRIC':'CONCENTRIC';
+  },
+
+  shoulder_press(t,w,h){
+    const cx=w*0.5, floor=h*0.82, seated=floor-60;
+    const lift=Math.max(0,Math.sin(t));
+    ctx.fillStyle=C.bench_top;ctx.beginPath();ctx.roundRect(cx-40,seated,80,14,4);ctx.fill();
+    ctx.fillStyle=C.bench_leg;ctx.beginPath();ctx.roundRect(cx-30,seated+14,60,floor-seated-14,3);ctx.fill();
+    const hipY=seated,spineTopY=hipY-80;
+    drawBone(cx,hipY,cx,spineTopY,7,false);
+    drawJoint(cx,spineTopY-12,10);
+    drawBone(cx,hipY,cx-20,floor,6,false);
+    drawBone(cx,hipY,cx+20,floor,6,false);
+    const dY=spineTopY-40-lift*50;
+    drawBone(cx-15,spineTopY+5,cx-40,spineTopY-20-lift*10,5,true);
+    drawBone(cx-40,spineTopY-20-lift*10,cx-35,dY,5,true);
+    drawBone(cx+15,spineTopY+5,cx+40,spineTopY-20-lift*10,5,true);
+    drawBone(cx+40,spineTopY-20-lift*10,cx+35,dY,5,true);
+    [[cx-35,dY],[cx+35,dY]].forEach(([dx,dy])=>{
+      ctx.fillStyle='#374151';ctx.beginPath();ctx.roundRect(dx-14,dy-6,28,12,4);ctx.fill();
+      drawJoint(dx,dy,4);
+    });
+    currentPhase=lift>0.5?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  pushdown(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const push=Math.max(0,Math.sin(t));
+    ctx.strokeStyle='rgba(0,229,255,0.4)';ctx.lineWidth=2;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,h*0.35-push*5);ctx.stroke();
+    ctx.setLineDash([]);
+    drawBone(cx,floor,cx,floor-90,7,false);
+    drawJoint(cx,floor-102,10);
+    drawBone(cx,floor,cx-25,floor,6,false);
+    drawBone(cx,floor,cx+25,floor,6,false);
+    const elbowY=floor-80;
+    const handY=elbowY+40+push*30;
+    drawBone(cx-15,floor-70,cx-15,elbowY,5,false);
+    drawBone(cx+15,floor-70,cx+15,elbowY,5,false);
+    drawBone(cx-15,elbowY,cx-20,handY,5,push>0.3);
+    drawBone(cx+15,elbowY,cx+20,handY,5,push>0.3);
+    ctx.strokeStyle=C.bar;ctx.lineWidth=3;ctx.setLineDash([]);
+    ctx.beginPath();ctx.moveTo(cx-20,handY);ctx.lineTo(cx-35,handY+8);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(cx+20,handY);ctx.lineTo(cx+35,handY+8);ctx.stroke();
+    [cx-15,cx+15].forEach(jx=>{drawJoint(jx,elbowY,5);drawJoint(jx+(jx<cx?-5:5),handY,5,true);});
+    currentPhase=push>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  tri_ext(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const ext=Math.max(0,Math.sin(t));
+    drawBone(cx,floor,cx,floor-90,7,false);
+    drawJoint(cx,floor-102,10);
+    drawBone(cx,floor,cx-25,floor,6,false);
+    drawBone(cx,floor,cx+25,floor,6,false);
+    const elbowY=floor-130;
+    const handY=elbowY+50-ext*55;
+    ctx.fillStyle='#374151';ctx.beginPath();ctx.ellipse(cx,handY,8,14,0,0,Math.PI*2);ctx.fill();
+    drawBone(cx-12,floor-85,cx-5,elbowY,5,false);
+    drawBone(cx+12,floor-85,cx+5,elbowY,5,false);
+    drawBone(cx-5,elbowY,cx-3,handY+14,5,ext>0.3);
+    drawBone(cx+5,elbowY,cx+3,handY+14,5,ext>0.3);
+    drawJoint(cx-5,elbowY,5);drawJoint(cx+5,elbowY,5);
+    drawJoint(cx,handY+14,5,true);
+    currentPhase=ext>0.5?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  lat_pulldown(t,w,h){
+    const cx=w*0.5,floor=h*0.82,seated=floor-50;
+    const pull=Math.max(0,Math.sin(t));
+    const barY=h*0.12+pull*60;
+    ctx.strokeStyle='rgba(0,229,255,0.4)';ctx.lineWidth=2;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,barY-5);ctx.stroke();ctx.setLineDash([]);
+    drawBar(cx,barY,130);
+    ctx.fillStyle=C.bench_top;ctx.beginPath();ctx.roundRect(cx-30,seated,60,12,4);ctx.fill();
+    drawBone(cx,seated,cx,seated-80,7,false);
+    drawJoint(cx,seated-92,10);
+    drawBone(cx,seated,cx-20,floor,6,false);
+    drawBone(cx,seated,cx+20,floor,6,false);
+    const elbowY=seated-40-pull*10;
+    const handY=barY;
+    drawBone(cx-15,seated-60,cx-50,elbowY,5,pull>0.4);
+    drawBone(cx-50,elbowY,cx-55,handY,5,pull>0.4);
+    drawBone(cx+15,seated-60,cx+50,elbowY,5,pull>0.4);
+    drawBone(cx+50,elbowY,cx+55,handY,5,pull>0.4);
+    currentPhase=pull>0.4?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  cable_row(t,w,h){
+    const floor=h*0.82,cx=w*0.5;
+    const pull=Math.max(0,Math.sin(t));
+    ctx.strokeStyle='rgba(0,229,255,0.4)';ctx.lineWidth=2;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(0,floor-60);ctx.lineTo(cx-60+pull*50,floor-60);ctx.stroke();ctx.setLineDash([]);
+    ctx.fillStyle=C.bench_top;ctx.beginPath();ctx.roundRect(cx-20,floor-50,80,12,4);ctx.fill();
+    drawBone(cx+20,floor-50,cx+20,floor-130,7,false);
+    drawJoint(cx+20,floor-142,10);
+    drawBone(cx+20,floor-50,cx,floor,6,false);
+    drawBone(cx+20,floor-50,cx+40,floor,6,false);
+    const handX=cx-60+pull*50;
+    drawBone(cx+10,floor-110,cx-20+pull*20,floor-100,5,pull>0.3);
+    drawBone(cx-20+pull*20,floor-100,handX,floor-60,5,pull>0.3);
+    drawJoint(handX,floor-60,5,true);
+    currentPhase=pull>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  db_row(t,w,h){
+    const floor=h*0.82,cx=w*0.5;
+    const pull=Math.max(0,Math.sin(t));
+    ctx.fillStyle=C.bench_top;ctx.beginPath();ctx.roundRect(cx+10,floor-60,70,12,4);ctx.fill();
+    ctx.fillStyle=C.bench_leg;ctx.beginPath();ctx.roundRect(cx+20,floor-48,50,48,3);ctx.fill();
+    drawBone(cx,floor,cx,floor-40,6,false);
+    drawBone(cx,floor-40,cx-20,floor,6,false);
+    drawBone(cx,floor-40,cx+60,floor-55,8,false);
+    drawJoint(cx+72,floor-58,10);
+    drawBone(cx+60,floor-52,cx+50,floor-60,4,false);
+    const handY=floor-30+pull*(-25);
+    drawBone(cx+60,floor-52,cx+20,floor-30,5,pull>0.3);
+    drawBone(cx+20,floor-30,cx+15,handY,5,pull>0.3);
+    ctx.fillStyle='#374151';ctx.beginPath();ctx.roundRect(cx+8,handY-4,22,8,3);ctx.fill();
+    drawJoint(cx+15,handY,5,true);
+    currentPhase=pull>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  barbell_curl(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const curl=Math.max(0,Math.sin(t));
+    drawBone(cx,floor,cx,floor-95,7,false);
+    drawJoint(cx,floor-107,10);
+    drawBone(cx,floor,cx-22,floor,6,false);
+    drawBone(cx,floor,cx+22,floor,6,false);
+    const elbowY=floor-75;
+    const handY=elbowY+50-curl*55;
+    const off=curl*10;
+    drawBone(cx-14,floor-80,cx-16,elbowY,5,false);
+    drawBone(cx+14,floor-80,cx+16,elbowY,5,false);
+    drawBone(cx-16,elbowY,cx-20+off,handY,5,curl>0.3);
+    drawBone(cx+16,elbowY,cx+20-off,handY,5,curl>0.3);
+    drawBar(cx,handY,90);
+    currentPhase=curl>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  hammer_curl(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const curl=Math.max(0,Math.sin(t));
+    const alt=t%(Math.PI*2)>Math.PI?1:-1;
+    drawBone(cx,floor,cx,floor-95,7,false);
+    drawJoint(cx,floor-107,10);
+    drawBone(cx,floor,cx-22,floor,6,false);
+    drawBone(cx,floor,cx+22,floor,6,false);
+    const elbowY=floor-75;
+    const activeSide=alt>0?1:-1;
+    [-1,1].forEach(side=>{
+      const active=(side===activeSide&&curl>0.2);
+      const handY=elbowY+50-(active?curl*50:5);
+      drawBone(cx+side*14,floor-80,cx+side*16,elbowY,5,false);
+      drawBone(cx+side*16,elbowY,cx+side*18,handY,5,active);
+      ctx.fillStyle='#374151';ctx.beginPath();ctx.roundRect(cx+side*12,handY-8,12,16,3);ctx.fill();
+      drawJoint(cx+side*18,handY,5,active);
+    });
+    currentPhase=curl>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  squat(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const sqDown=Math.max(0,Math.sin(t));
+    const hipY=floor-40+sqDown*60;
+    const kneeY=floor-30;
+    const torsoY=hipY-70+sqDown*20;
+    drawBar(cx,torsoY-10,160);
+    drawBone(cx,hipY,cx,torsoY,8,sqDown>0.4);
+    drawJoint(cx,torsoY-12,10);
+    drawBone(cx-15,hipY,cx-30,kneeY,7,sqDown>0.4);
+    drawBone(cx+15,hipY,cx+30,kneeY,7,sqDown>0.4);
+    drawBone(cx-30,kneeY,cx-22,floor,6,false);
+    drawBone(cx+30,kneeY,cx+22,floor,6,false);
+    drawBone(cx-50,torsoY,cx-50,torsoY-10,3,false);
+    drawBone(cx+50,torsoY,cx+50,torsoY-10,3,false);
+    currentPhase=sqDown>0.5?'ECCENTRIC':'CONCENTRIC';
+  },
+
+  rdl(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const hinge=Math.max(0,Math.sin(t));
+    const hipY=floor-50;
+    const kneeY=floor-25;
+    const torsoAngle=hinge*0.7;
+    const tLen=85;
+    const torsoX=cx+Math.sin(torsoAngle)*tLen;
+    const torsoY=hipY-Math.cos(torsoAngle)*tLen;
+    drawBar(cx,floor-14+hinge*(-50),160);
+    drawBone(cx,hipY,torsoX,torsoY,8,hinge>0.3);
+    drawJoint(torsoX+Math.sin(torsoAngle)*14,torsoY-Math.cos(torsoAngle)*14,10);
+    drawBone(cx-14,hipY,cx-12,kneeY,6,false);
+    drawBone(cx+14,hipY,cx+12,kneeY,6,false);
+    drawBone(cx-12,kneeY,cx-10,floor,6,false);
+    drawBone(cx+12,kneeY,cx+10,floor,6,false);
+    currentPhase=hinge>0.3?'ECCENTRIC':'CONCENTRIC';
+  },
+
+  leg_press(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const push=Math.max(0,Math.sin(t));
+    ctx.fillStyle=C.bench_top;ctx.beginPath();ctx.roundRect(cx-80,floor-80,20,80,4);ctx.fill();
+    ctx.fillStyle='#374151';ctx.beginPath();ctx.roundRect(cx-40,floor-90-push*40,80,20,4);ctx.fill();
+    drawBone(cx-60,floor-70,cx-60,floor-140,6,false);
+    drawJoint(cx-60,floor-152,9);
+    drawBone(cx-60,floor-70,cx-50,floor,6,false);
+    const kneeX=cx-60+(push*50);
+    const kneeY=floor-50-push*20;
+    drawBone(cx-60,floor-70,kneeX,kneeY,6,push>0.3);
+    drawBone(kneeX,kneeY,cx-40,floor-95-push*40,6,push>0.3);
+    drawJoint(kneeX,kneeY,6,true);
+    currentPhase=push>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  leg_ext(t,w,h){
+    const cx=w*0.5,floor=h*0.82,seatY=floor-60;
+    const ext=Math.max(0,Math.sin(t));
+    ctx.fillStyle=C.bench_top;ctx.beginPath();ctx.roundRect(cx-50,seatY,70,12,4);ctx.fill();
+    ctx.fillStyle=C.bench_leg;ctx.beginPath();ctx.roundRect(cx-30,seatY+12,30,floor-seatY-12,3);ctx.fill();
+    drawBone(cx-30,seatY,cx-30,seatY-80,7,false);
+    drawJoint(cx-30,seatY-92,10);
+    const kneeX=cx+25;
+    const ang=ext*Math.PI/2;
+    const fx=kneeX+Math.sin(ang)*55, fy=seatY+Math.cos(ang)*55;
+    drawBone(cx-30,seatY,kneeX,seatY,7,ext>0.3);
+    drawBone(kneeX,seatY,fx,fy,6,ext>0.3);
+    ctx.fillStyle='#374151';ctx.beginPath();ctx.roundRect(fx-8,fy-8,16,16,3);ctx.fill();
+    drawJoint(kneeX,seatY,6,true);drawJoint(fx,fy,5,true);
+    currentPhase=ext>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  leg_curl(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const curl=Math.max(0,Math.sin(t));
+    ctx.fillStyle=C.bench_top;ctx.beginPath();ctx.roundRect(cx-100,floor-40,200,14,4);ctx.fill();
+    drawBone(cx-80,floor-40,cx+50,floor-40,7,false);
+    drawJoint(cx+65,floor-40,10);
+    const kneeX=cx-30;
+    const footX=cx-80+curl*(-20);
+    const footY=floor-40-curl*50;
+    drawBone(cx-80,floor-40,kneeX,floor-40,6,false);
+    drawBone(kneeX,floor-40,footX,footY,6,curl>0.3);
+    ctx.fillStyle='#374151';ctx.beginPath();ctx.roundRect(cx-30,floor-54,60,14,3);ctx.fill();
+    drawJoint(footX,footY,5,true);
+    currentPhase=curl>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  calf_raise(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const rise=Math.max(0,Math.sin(t));
+    const heelY=floor-rise*35;
+    ctx.fillStyle=C.bench_top;ctx.beginPath();ctx.roundRect(cx-50,floor-90,100,14,4);ctx.fill();
+    ctx.fillStyle=C.bench_leg;ctx.beginPath();ctx.roundRect(cx-40,floor-76,80,76,3);ctx.fill();
+    drawBone(cx,floor-90,cx,floor-160,6,false);
+    drawJoint(cx,floor-172,10);
+    drawBone(cx-20,floor-90,cx-40,heelY,7,rise>0.3);
+    drawBone(cx+20,floor-90,cx+40,heelY,7,rise>0.3);
+    ctx.fillStyle='#374151';ctx.beginPath();ctx.roundRect(cx-30,heelY-6,60,14,3);ctx.fill();
+    currentPhase=rise>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  crunch(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const crunch=Math.max(0,Math.sin(t));
+    drawBone(cx,floor,cx,floor-40,6,false);
+    drawBone(cx-15,floor,cx,floor-40,6,false);
+    drawBone(cx+15,floor,cx,floor-40,6,false);
+    const torsoY=floor-40-crunch*40;
+    drawBone(cx,floor-40,cx,torsoY,7,crunch>0.3);
+    drawJoint(cx,torsoY-12-crunch*5,10);
+    ctx.strokeStyle='rgba(0,229,255,0.4)';ctx.lineWidth=2;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(cx,0);ctx.lineTo(cx,torsoY-12);ctx.stroke();ctx.setLineDash([]);
+    currentPhase=crunch>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  lat_raise(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const raise=Math.max(0,Math.sin(t));
+    drawBone(cx,floor,cx,floor-95,7,false);
+    drawJoint(cx,floor-107,10);
+    drawBone(cx,floor,cx-25,floor,6,false);
+    drawBone(cx,floor,cx+25,floor,6,false);
+    const armY=floor-80-raise*60;
+    const armX=40+raise*40;
+    drawBone(cx-12,floor-80,cx-armX,armY,5,raise>0.2);
+    drawBone(cx+12,floor-80,cx+armX,armY,5,raise>0.2);
+    ctx.fillStyle='#374151';
+    ctx.beginPath();ctx.ellipse(cx-armX-6,armY,10,6,0,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.ellipse(cx+armX+6,armY,10,6,0,0,Math.PI*2);ctx.fill();
+    currentPhase=raise>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  cable_lat(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const raise=Math.max(0,Math.sin(t));
+    drawBone(cx,floor,cx,floor-95,7,false);
+    drawJoint(cx,floor-107,10);
+    drawBone(cx,floor,cx-25,floor,6,false);
+    drawBone(cx,floor,cx+25,floor,6,false);
+    const armY=floor-75-raise*55;
+    const armX=40+raise*40;
+    drawBone(cx+12,floor-80,cx+armX,armY,5,raise>0.3);
+    drawBone(cx-12,floor-80,cx-20,floor-75,5,false);
+    ctx.strokeStyle='rgba(0,229,255,0.4)';ctx.lineWidth=2;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(cx+armX,armY);ctx.lineTo(0,floor-50);ctx.stroke();ctx.setLineDash([]);
+    currentPhase=raise>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  face_pull(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const pull=Math.max(0,Math.sin(t));
+    ctx.strokeStyle='rgba(0,229,255,0.4)';ctx.lineWidth=2;ctx.setLineDash([4,4]);
+    ctx.beginPath();ctx.moveTo(w,floor-80);ctx.lineTo(cx+40-pull*40,floor-80);ctx.stroke();ctx.setLineDash([]);
+    drawBone(cx,floor,cx,floor-95,7,false);
+    drawJoint(cx,floor-107,10);
+    drawBone(cx,floor,cx-25,floor,6,false);
+    drawBone(cx,floor,cx+25,floor,6,false);
+    const handX=cx+40-pull*40;
+    const elbowX=handX+15+pull*20;
+    const elbowY=floor-85;
+    drawBone(cx-10,floor-80,cx-elbowX+cx,elbowY,5,pull>0.3);
+    drawBone(cx-elbowX+cx,elbowY,cx-handX+cx,floor-80,5,pull>0.3);
+    drawBone(cx+10,floor-80,elbowX,elbowY,5,pull>0.3);
+    drawBone(elbowX,elbowY,handX,floor-80,5,pull>0.3);
+    currentPhase=pull>0.4?'CONCENTRIC':'ECCENTRIC';
+  },
+
+  skull_crusher(t,w,h){
+    const cx=w*0.5,cy=h*0.55;
+    const lower=Math.max(0,-Math.sin(t));
+    const barY=cy-40-lower*40;
+    drawBench(cx,cy+10);
+    const sx=cx-50,sy=cy-8;
+    drawBone(sx,sy,sx+100,sy,8,false);
+    drawJoint(sx+115,sy,10);
+    drawBone(sx-10,sy,sx-40,cy+8,6,false);
+    drawBone(sx-40,cy+8,sx-30,cy+24,6,false);
+    const upArmX=sx+75,upArmY=sy-25;
+    drawBone(sx+70,sy,upArmX,upArmY,5,false);
+    drawBone(sx+85,sy,upArmX+20,upArmY,5,false);
+    drawBone(upArmX,upArmY,upArmX-5,barY,5,lower>0.2);
+    drawBone(upArmX+20,upArmY,upArmX+25,barY,5,lower>0.2);
+    drawBar(cx,barY,80);
+    currentPhase=lower>0.3?'ECCENTRIC':'CONCENTRIC';
+  },
+
+  incline_curl(t,w,h){
+    const cx=w*0.5,floor=h*0.82;
+    const curl=Math.max(0,Math.sin(t));
+    const bench_angle=Math.PI/4;
+    ctx.fillStyle=C.bench_top;
+    ctx.save();ctx.translate(cx,floor-60);ctx.rotate(-bench_angle);
+    ctx.beginPath();ctx.roundRect(-90,-12,180,24,6);ctx.fill();ctx.restore();
+    const sx=cx,sy=floor-60;
+    const torsoX=sx+Math.cos(Math.PI/2-bench_angle)*85;
+    const torsoY=sy-Math.sin(Math.PI/2-bench_angle)*85;
+    drawBone(sx,sy,torsoX,torsoY,7,false);
+    drawJoint(torsoX+8,torsoY-10,10);
+    const upperArmX=torsoX-10;
+    const upperArmY=torsoY+10;
+    const handY=upperArmY+40-curl*45;
+    drawBone(upperArmX,upperArmY,upperArmX-5,upperArmY+45,4,false);
+    drawBone(upperArmX-5,upperArmY+45,upperArmX-2,handY,5,curl>0.2);
+    ctx.fillStyle='#374151';ctx.beginPath();ctx.roundRect(upperArmX-12,handY-4,22,8,3);ctx.fill();
+    drawJoint(upperArmX-2,handY,5,true);
+    currentPhase=curl>0.3?'CONCENTRIC':'ECCENTRIC';
+  },
+};
+
+function renderFrame(){
+  resizeCanvas();
+  const w=canvas.width,h=canvas.height;
+  drawBackground();
+  const fn=anims[currentAnim]||anims.bench;
+  fn(t,w,h);
+  document.getElementById('phase-indicator').textContent=currentPhase;
+  if(!paused) t+=0.03;
+  animReq=requestAnimationFrame(renderFrame);
+}
+
+function openDemo(exerciseId){
+  const ex=EXERCISES[exerciseId];
+  if(!ex) return;
+  document.getElementById('modal-title').textContent=ex.name;
+  document.getElementById('cue-sets').textContent=ex.sets+' sets';
+  document.getElementById('cue-reps').textContent=ex.reps+' reps';
+  document.getElementById('cue-tempo').textContent=ex.tempo;
+  document.getElementById('cue-rest').textContent=ex.rest;
+  document.getElementById('form-tips').innerHTML=ex.tips.map(tip=>`<li>${tip}</li>`).join('');
+  document.getElementById('muscle-tags').innerHTML=ex.muscles.map(m=>`<div class="muscle-tag${ex.primary.includes(m)?' primary':''}">${m}</div>`).join('');
+  currentAnim=ex.anim;
+  paused=false;t=0;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(animReq) cancelAnimationFrame(animReq);
+  resizeCanvas();
+  renderFrame();
+}
+
+function closeDemo(){
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow='';
+  if(animReq){ cancelAnimationFrame(animReq); animReq=null; }
+}
+
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('modal')) closeDemo();
+}
+
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDemo(); });
+</script>
+</body>
+</html>
